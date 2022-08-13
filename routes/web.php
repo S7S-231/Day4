@@ -37,7 +37,7 @@ Route::get('/users/{id}/edit', [UserController::class, 'edit'])->where('id' , '[
 
 Route::put('/users/{id}', [UserController::class, 'update'])->where('id' , '[0-9]+')->middleware('auth')->name('users.update');
 
-Route::delete('/users/{id}', [UserController::class, 'destroy'])->where('id' , '[0-9]+')->middleware('auth')    ->name('users.destroy');
+Route::delete('/users/{id}', [UserController::class, 'destroy'])->where('id' , '[0-9]+')->middleware('auth')->name('users.destroy');
 
 
 

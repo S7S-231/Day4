@@ -1,17 +1,20 @@
 <?php
 
 namespace App\Http\Controllers;
+//use Auth;
 
 use App\Models\post;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Http\Requests\StoreBlogPost;
+//use App\Models\User;
+use Illuminate\Validation\ValidationException;
 
 class Postcontroller extends Controller
 {
     //
     public function index()
     {
-        $posts = post::simplePaginate(15);
+        $posts = post::simplePaginate(14);
 
 
 
@@ -22,22 +25,39 @@ class Postcontroller extends Controller
 
         return view('posts.create');
     }
-    public function store(Request $req)
-    {   $name = $req->input('name');
+    public function store(StoreBlogPost $req)
+    {
+
+
+
+        $name = $req->input('name');
         $email = $req->input('body');
         $pass = $req->input('r1');
 
-
-
+        $req->validated();
+        
+        if( $req->hasFile('image') ){
+            $path = $req->file('image')->store('images','public');
+            post::create(
+                ['title' => $name , 'body' => $email , 'enabled' => $pass ,'user_id' => auth()->user()->id , 'image' => $path ]);
+        }
+        else{
         post::create(
-        ['title' => $name , 'body' => $email , 'enabled' => $pass ,'user_id' => auth()->user()->id ]);
-
+        ['title' => $name , 'body' => $email , 'enabled' => $pass ,'user_id' => auth()->user()->id  ]);
+        }
         return redirect()->Route("posts.index");
     }
+
+
+
+
+
+
     public function show($id)
     {
 
-        return dd(post::where('P_id', $id)->get());
+        $post = post::where('P_id', $id)->get()->first();
+        return view('posts.show',['post'=>$post]);
     }
 
 
@@ -45,11 +65,17 @@ class Postcontroller extends Controller
        //
        public function edit($id)
        {
-            $users = post::simplePaginate(15);
-            $user = $users[$id];
+            $post = post::where('P_id', $id)->get()->first();
 
-            return view('posts.edit')->with( [ "user" => $user  ]);
 
+
+            if($post->user_id == auth()->id()){
+
+                return view('posts.edit')->with( [ "post" => $post  ]);
+        }
+        else {
+            return redirect()->Route("posts.index");
+        }
 
     }
 
@@ -59,10 +85,14 @@ class Postcontroller extends Controller
         $name = $req->input('name');
         $email = $req->input('body');
         $pass = $req->input('r1');
-        $ud = $req->input('uid');
+
+            $req->validate([
+            'name' => ' required|max:100',
+            'body' => 'required|max:1000',
+            ]);
 
 
-            post::find($id)->update(['title'=> $name , 'body'=> $email , 'enabled' => $pass , 'user_id' => $ud]);
+            post::where('P_id', $id)->update(['title'=> $name , 'body'=> $email , 'enabled' => $pass]);
 
             return redirect()->Route("posts.index");
     }

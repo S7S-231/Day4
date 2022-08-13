@@ -4,17 +4,26 @@
 
 @section('content')
 
-<form method="POST" action="{{Route('posts.update' , ['id' => $user['P_id'] ])}}">
+<form method="POST" action="{{Route('posts.update' , ['id' => $post['P_id'] ])}}">
     @method('PUT')
     @csrf
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <div class="mb-3" >
       <label for="exampleInputEmail1" class="form-label">Title</label>
-      <input type="text" class="form-control" id="exampleInputEmail1" name="name" aria-describedby="emailHelp" value="{{$user['title']}}">
+      <input type="text" class="form-control" id="exampleInputEmail1" name="name" aria-describedby="emailHelp" value="{{$post['title']}}">
 
     </div>
     <div class="mb-3">
       <label for="exampleInputPassword1" class="form-label">Body</label>
-      <input type="text" class="form-control" id="exampleInputPassword1" name="body" value="{{$user['body']}}">.
+      <input type="text" class="form-control" id="exampleInputPassword1" name="body" value="{{$post['body']}}">.
 
     </div>
     <div class="form-check">

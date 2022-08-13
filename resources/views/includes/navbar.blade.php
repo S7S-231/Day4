@@ -12,7 +12,7 @@
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              List
+             <b> Options</b>
             </a>
             <ul class="dropdown-menu">
               <li><a @class(['dropdown-item ','active' => Route::is("users.create")]) href="{{Route('users.create')}}">Create User</a></li>
@@ -35,14 +35,14 @@
 
 
       <form method="POST" action="{{ route('logout') }}">
-        <button type="button" class="btn btn-success"><div>{{ Auth::user()->name }}</div> </button><br>
-                  @csrf<a class="btn btn-warning" href="route('logout')"
+        <button type="button" class="btn btn-warning"><div>{{ Auth::user()->name }}</div> </button>
+                  @csrf<a class="btn btn-dark" href="route('logout')"
                   onclick="event.preventDefault();
                   this.closest('form').submit();">
                   {{ __('Log Out') }}
                   </a>
       </form>
-      @else <a class="btn btn-warning" href="{{route('login')}}">Login</a>
+      @else <a class="btn btn-dark" href="{{route('login')}}">Login</a>
       @endif
     </div>
 

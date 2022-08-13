@@ -22,6 +22,7 @@ return new class extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
             $table->softDeletes('deleted_at');
+            $table->string('image')->nullable();
         });
     }
 

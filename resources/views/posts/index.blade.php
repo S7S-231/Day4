@@ -25,7 +25,7 @@
         @if($post['P_id'] == "0")
     @continue
     @endif
-        <td>{{$post['id']}}</td>
+        <td>{{$post['P_id']}}</td>
         <td><a href="{{ Route('posts.show',['id'=>$post['P_id'] ]) }}">{{$post['title']}}</a></td>
         <td>{{$post->user->name}}</td>
         <td>{{$post['body']}}</td>
@@ -35,15 +35,18 @@
         <td>{{$post['created_at']}}</td>
         <td>{{$post['updated_at']}}</td>
 
-        <td><div class="row text-center">
-            <div class="col-md-6 "><a href="{{ Route('posts.edit',['id'=>$post['P_id'] ]) }}" class="btn btn-primary">Edit</a>
+        <td>
+            <div class="row text-center">
+            <div class="col-md-6 ">
+
+           <a href="{{ Route('posts.edit',['id'=>$post['P_id'] ]) }}" class="btn btn-primary">Edit</a>
 
                 <form method="POST" action="{{ Route('posts.destroy',['id'=>$post['P_id'] ]) }}">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
-
+            </div>
         </div>
     </td>
 
